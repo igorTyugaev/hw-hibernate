@@ -1,33 +1,33 @@
 package models;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "child")
 public class Child {
-    private int id;
-    private String fullName;
-    private int age;
-    private int educationId;
-    private School schoolByEducationId;
-
     public Child() {
+    }
+
+    public Child(String fullName, int age) {
+        this.fullName = fullName;
+        this.age = age;
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    private int id;
+
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     @Basic
     @Column(name = "full_name", nullable = false, length = 120)
+    private String fullName;
+
     public String getFullName() {
         return fullName;
     }
@@ -38,12 +38,42 @@ public class Child {
 
     @Basic
     @Column(name = "age", nullable = false)
+    private int age;
+
     public int getAge() {
         return age;
     }
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "school_id")
+    private School school;
+
+    public School getSchool() {
+        return school;
+    }
+
+    public void setSchool(School school) {
+        this.school = school;
+    }
+
+    @ManyToMany(mappedBy = "children")
+    private Set<Parent> parents = new HashSet<>();
+
+    public Set<Parent> getParents() {
+        return parents;
+    }
+
+    public void setParents(Set<Parent> parents) {
+        this.parents = parents;
+    }
+
+    public void addParent(Parent parent) {
+        parent.addChild(this);
+        this.parents.add(parent);
     }
 
     @Override
@@ -55,7 +85,6 @@ public class Child {
 
         if (id != child.id) return false;
         if (age != child.age) return false;
-        if (educationId != child.educationId) return false;
         if (fullName != null ? !fullName.equals(child.fullName) : child.fullName != null) return false;
 
         return true;
@@ -66,20 +95,6 @@ public class Child {
         int result = id;
         result = 31 * result + (fullName != null ? fullName.hashCode() : 0);
         result = 31 * result + age;
-        result = 31 * result + educationId;
         return result;
     }
-
-    @ManyToOne
-    @JoinColumn(name = "education_id", referencedColumnName = "id", nullable = false)
-    public School getSchoolByEducationId() {
-        return schoolByEducationId;
-    }
-
-    public void setSchoolByEducationId(School schoolByEducationId) {
-        this.schoolByEducationId = schoolByEducationId;
-    }
-
-    @ManyToMany(mappedBy = "child")
-    private List<Parent> parents;
 }

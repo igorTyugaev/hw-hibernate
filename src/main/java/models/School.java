@@ -2,37 +2,66 @@ package models;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "school")
 public class School {
-    private int id;
-    private int num;
-    private int addressId;
-    private Collection<Child> childrenById;
-    private Address addressByAddressId;
 
     public School() {
     }
 
+    public School(int num) {
+        this.num = num;
+    }
+
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     @Basic
     @Column(name = "num", nullable = false)
+    private int num;
+
     public int getNum() {
         return num;
     }
 
     public void setNum(int num) {
         this.num = num;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id")
+    private Address address;
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+
+    @OneToMany(mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Child> children;
+
+    public List<Child> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Child> children) {
+        this.children = children;
+    }
+
+    public void addChild(Child child) {
+        child.setSchool(this);
+        this.children.add(child);
     }
 
     @Override
@@ -44,7 +73,7 @@ public class School {
 
         if (id != school.id) return false;
         if (num != school.num) return false;
-        if (addressId != school.addressId) return false;
+        if (address.hashCode() != school.address.hashCode()) return false;
 
         return true;
     }
@@ -53,26 +82,7 @@ public class School {
     public int hashCode() {
         int result = id;
         result = 31 * result + num;
-        result = 31 * result + addressId;
+        result = 31 * result + address.hashCode();
         return result;
-    }
-
-    @OneToMany(mappedBy = "schoolByEducationId")
-    public Collection<Child> getChildrenById() {
-        return childrenById;
-    }
-
-    public void setChildrenById(Collection<Child> childrenById) {
-        this.childrenById = childrenById;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false)
-    public Address getAddressByAddressId() {
-        return addressByAddressId;
-    }
-
-    public void setAddressByAddressId(Address addressByAddressId) {
-        this.addressByAddressId = addressByAddressId;
     }
 }

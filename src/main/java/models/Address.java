@@ -2,6 +2,7 @@ package models;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "address")
@@ -34,7 +35,6 @@ public class Address {
         this.title = title;
     }
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "zone_id")
     private Zone zone;
@@ -45,6 +45,39 @@ public class Address {
 
     public void setZone(Zone zone) {
         this.zone = zone;
+    }
+
+    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<School> schools;
+
+    public List<School> getSchools() {
+        return schools;
+    }
+
+    public void setSchools(List<School> schools) {
+        this.schools = schools;
+    }
+
+    public void addSchool(School school) {
+        school.setAddress(this);
+        this.schools.add(school);
+    }
+
+
+    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Parent> parents;
+
+    public List<Parent> getParents() {
+        return parents;
+    }
+
+    public void setParents(List<Parent> parents) {
+        this.parents = parents;
+    }
+
+    public void addParent(Parent parent) {
+        parent.setAddress(this);
+        this.parents.add(parent);
     }
 
     @Override
