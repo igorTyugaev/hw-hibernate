@@ -8,5 +8,10 @@
         <property name="connection.url">jdbc:mysql://localhost:3306/db_hibernate</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password">quadroVer913</property>
+        <mapping class="models.Address"/>
+        <mapping class="models.Child"/>
+        <mapping class="models.Parent"/>
+        <mapping class="models.School"/>
+        <mapping class="models.Zone"/>
     </session-factory>
 </hibernate-configuration>
