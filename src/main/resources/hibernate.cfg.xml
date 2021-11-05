@@ -1,27 +1,12 @@
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-configuration PUBLIC
-    "-//Hibernate/Hibernate Configuration DTD//EN"
-    "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
-  <session-factory>
-    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-    <property name="connection.url">jdbc:mysql://localhost:3306/db_hibernate</property>
-    <property name="hibernate.connection.username">root</property>
-    <property name="hibernate.connection.password">quadroVer913</property>
-    <mapping resource="Address.hbm.xml"/>
-    <mapping class="models.Address"/>
-    <mapping class="models.Child"/>
-    <mapping resource="Child.hbm.xml"/>
-    <mapping class="models.Parent"/>
-    <mapping resource="Parent.hbm.xml"/>
-    <mapping resource="School.hbm.xml"/>
-    <mapping class="models.School"/>
-    <mapping resource="Zone.hbm.xml"/>
-    <mapping class="models.Zone"/>
-    <!-- <property name="connection.username"/> -->
-    <!-- <property name="connection.password"/> -->
-
-    <!-- DB schema will be updated if needed -->
-    <!-- <property name="hibernate.hbm2ddl.auto">update</property> -->
-  </session-factory>
+    <session-factory>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/db_hibernate</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">quadroVer913</property>
+    </session-factory>
 </hibernate-configuration>
