@@ -14,6 +14,13 @@ public class Parent {
         this.fullName = fullName;
     }
 
+    public Parent(String fullName, Address address) {
+        this.fullName = fullName;
+        this.address = address;
+    }
+
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

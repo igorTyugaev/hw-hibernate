@@ -39,7 +39,7 @@ public class ParentDao {
 
 
     public List<Parent> findAll() {
-        List<Parent> users = (List<Parent>) HibernateUtil.getOpenSession().createQuery("From Parent").list();
-        return users;
+        List<Parent> parents = (List<Parent>) HibernateUtil.getOpenSession().createQuery("From Parent").list();
+        return parents;
     }
 }

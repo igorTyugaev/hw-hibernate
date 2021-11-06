@@ -12,8 +12,20 @@ public class ZoneService {
     public ZoneService() {
     }
 
-    public Zone findService(int id) {
+    public Zone findByIdService(int id) {
         return zoneDao.findById(id);
+    }
+
+    public Zone findByNameService(String title) {
+        return zoneDao.findByName(title);
+    }
+
+    public boolean checkExistService(int id) {
+        return zoneDao.checkExistById(id);
+    }
+
+    public boolean checkExistByName(String title) {
+        return zoneDao.checkExistByName(title);
     }
 
     public void saveService(Zone zone) {

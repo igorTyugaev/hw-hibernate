@@ -11,8 +11,20 @@ public class AddressService {
     public AddressService() {
     }
 
-    public Address findService(int id) {
+    public Address findByIdService(int id) {
         return addressDao.findById(id);
+    }
+
+    public Address findByNameService(String title) {
+        return addressDao.findByName(title);
+    }
+
+    public boolean checkExistService(int id) {
+        return addressDao.checkExistById(id);
+    }
+
+    public boolean checkExistByName(String title) {
+        return addressDao.checkExistByName(title);
     }
 
     public void saveService(Address address) {

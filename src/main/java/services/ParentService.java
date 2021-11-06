@@ -1,6 +1,7 @@
 package services;
 
 import dao.ParentDao;
+import models.Address;
 import models.Parent;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class ParentService {
         parentDao.update(parent);
     }
 
-    public List<Parent> findAllServices() {
+    public List<Parent> findAllParents() {
         return parentDao.findAll();
     }
 }

@@ -15,6 +15,11 @@ public class Address {
         this.title = title;
     }
 
+    public Address(String title, Zone zone) {
+        this.title = title;
+        this.zone = zone;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -24,7 +29,7 @@ public class Address {
     }
 
     @Basic
-    @Column(name = "title", nullable = true, length = 210)
+    @Column(name = "title", nullable = false, length = 120)
     private String title;
 
     public String getTitle() {
