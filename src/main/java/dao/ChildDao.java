@@ -10,7 +10,9 @@ import java.util.List;
 public class ChildDao {
 
     public Child findById(int id) {
-        return HibernateUtil.getOpenSession().get(Child.class, id);
+        Session session = HibernateUtil.getOpenSession();
+        Child child = session.get(Child.class, id);
+        return child;
     }
 
     public void save(Child child) {
@@ -29,6 +31,14 @@ public class ChildDao {
         session.close();
     }
 
+    public void merge(Child child) {
+        Session session = HibernateUtil.getOpenSession();
+        Transaction tx1 = session.beginTransaction();
+        session.merge(child);
+        tx1.commit();
+        session.close();
+    }
+
     public void delete(Child child) {
         Session session = HibernateUtil.getOpenSession();
         Transaction tx1 = session.beginTransaction();
@@ -39,7 +49,8 @@ public class ChildDao {
 
 
     public List<Child> findAll() {
-        List<Child> users = (List<Child>) HibernateUtil.getOpenSession().createQuery("From Child").list();
+        Session session = HibernateUtil.getOpenSession();
+        List<Child> users = (List<Child>) session.createQuery("From Child").list();
         return users;
     }
 }

@@ -11,7 +11,7 @@ public class ChildService {
     public ChildService() {
     }
 
-    public Child findService(int id) {
+    public Child findById(int id) {
         return childDao.findById(id);
     }
 
@@ -25,6 +25,10 @@ public class ChildService {
 
     public void updateService(Child child) {
         childDao.update(child);
+    }
+
+    public void mergeService(Child child) {
+        childDao.merge(child);
     }
 
     public List<Child> findAllServices() {

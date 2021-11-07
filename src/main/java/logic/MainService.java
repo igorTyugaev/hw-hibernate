@@ -8,6 +8,9 @@ import services.*;
 import utils.HibernateUtil;
 
 import javax.persistence.metamodel.EntityType;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 
@@ -16,13 +19,97 @@ import java.util.*;
 //    Учебное учреждение (Адрес, номер).
 //    Район (список адресов).
 public class MainService {
+    private static BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
-    public static void changeAddress() {
+    public static int showMenu() throws IOException {
+        System.out.println("\n---- Меню ----");
+        System.out.println(" 1 - создать родителя");
+        System.out.println(" 2 - создать ребенка");
+        System.out.println(" 3 - сменить адресс родителя");
+        System.out.println(" 4 - сменить школу ребенка");
+        System.out.println("---- Меню ----");
+        System.out.print("\nВведите номер команды -> ");
+        int command = Integer.valueOf(in.readLine());
+        return command;
+    }
+
+    public static void changeSchool() throws IOException {
+        ZoneService zoneService = new ZoneService();
+        AddressService addressService = new AddressService();
+        ChildService childService = new ChildService();
+        SchoolService schoolService = new SchoolService();
+
+        System.out.println("-----------------------------");
+        System.out.println("Метод смены школы");
+        System.out.println("-----------------------------");
+
+        System.out.println("\n|Шаг 1|");
+        System.out.println("Выберите ребенка для смены школы по его id");
+        System.out.println("id | title");
+        System.out.println("--------------------");
+        for (Child child : childService.findAllServices()) {
+            System.out.print(child.getId() + " | ");
+            System.out.println(child.getFullName());
+        }
+        System.out.print("Введите id ребенка -> ");
+        int childID = Integer.valueOf(in.readLine());
+
+        Child child = childService.findById(childID);
+        System.out.println("\nВыбран ребенок:");
+        System.out.println(child.getFullName());
+        System.out.println("Школа №" + child.getSchool().getNum());
+
+
+        System.out.println("\n|Шаг 2|");
+        System.out.println("Выберите ноый район для школы по его id");
+        System.out.println("id | title");
+        System.out.println("--------------------");
+        for (Zone zone : zoneService.findAllServices()) {
+            System.out.print(" " + zone.getId() + " | ");
+            System.out.println(zone.getTitle());
+        }
+        System.out.println("--------------------");
+        System.out.print("Введите новый id района -> ");
+        int zoneID = Integer.valueOf(in.readLine());
+
+        System.out.println("\n|Шаг 3|");
+        System.out.println("Выберите ноый адрес для школы по его id");
+        System.out.println("id | title");
+        System.out.println("--------------------");
+        for (Address address : addressService.findByZoneID(zoneID)) {
+            System.out.print(address.getId() + " | ");
+            System.out.println(address.getTitle());
+        }
+        System.out.print("Введите id адреса -> ");
+        int addressID = Integer.valueOf(in.readLine());
+
+        Address newAddress = addressService.findById(addressID);
+        System.out.println("\n|Шаг 4|");
+        System.out.println("Выберите новую школу для ребенка");
+        System.out.println("id | school");
+        System.out.println("--------------------");
+        for (School school : schoolService.findByZoneID(newAddress.getZone().getId())) {
+            System.out.print(" " + school.getId() + " | ");
+            System.out.print("Школа №");
+            System.out.println(school.getNum());
+        }
+        System.out.println("--------------------");
+        System.out.print("Введите id школы -> ");
+        int schoolID = Integer.valueOf(in.readLine());
+
+        School school = schoolService.findById(schoolID);
+        child.setSchool(school);
+        childService.mergeService(child);
+
+        System.out.println("\nШкола успешно обновлена");
+        System.out.print(child.getFullName());
+        System.out.println(" перешол в новую школу №" + child.getSchool().getNum());
+    }
+
+    public static void changeAddress() throws IOException {
         ZoneService zoneService = new ZoneService();
         AddressService addressService = new AddressService();
         ParentService parentService = new ParentService();
-
-        Scanner in = new Scanner(System.in);
 
         System.out.println("-----------------------------");
         System.out.println("Метод смены адреса проживания");
@@ -36,16 +123,53 @@ public class MainService {
             System.out.print(parent.getId() + " | ");
             System.out.println(parent.getFullName());
         }
-        System.out.print("Введите id роодителя -> ");
-        int addressID = in.nextInt();
+        System.out.print("Введите id родителя -> ");
+        int parentID = Integer.valueOf(in.readLine());
+
+        Parent parent = parentService.findById(parentID);
+        System.out.println("\nВыбран пользователь:");
+        System.out.println(parent.getFullName());
+        System.out.println("Текущий адрес: " + parent.getAddress().getTitle());
+
+
+        System.out.println("\n|Шаг 2|");
+        System.out.println("Выберите ноый район по его id");
+        System.out.println("id | title");
+        System.out.println("--------------------");
+        for (Zone zone : zoneService.findAllServices()) {
+            System.out.print(" " + zone.getId() + " | ");
+            System.out.println(zone.getTitle());
+        }
+        System.out.println("--------------------");
+        System.out.print("Введите новый id района -> ");
+        int zoneID = Integer.valueOf(in.readLine());
+
+        System.out.println("\n|Шаг 3|");
+        System.out.println("Выберите ноый адрес по его id");
+        System.out.println("id | title");
+        System.out.println("--------------------");
+        for (Address address : addressService.findByZoneID(zoneID)) {
+            System.out.print(address.getId() + " | ");
+            System.out.println(address.getTitle());
+        }
+        System.out.print("Введите id адреса -> ");
+        int addressID = Integer.valueOf(in.readLine());
+
+        Address newAddress = addressService.findById(addressID);
+        parent.setAddress(newAddress);
+        parentService.mergeService(parent);
+
+        System.out.println("\nАдресс успешно обновлен");
+        System.out.print(parent.getFullName());
+        System.out.print(" переехал в ");
+        System.out.print(parent.getAddress().getZone().getTitle() + " район по адресу ");
+        System.out.println(parent.getAddress().getTitle());
     }
 
-    public static void createParent() {
+    public static void createParent() throws IOException {
         ZoneService zoneService = new ZoneService();
         AddressService addressService = new AddressService();
         ParentService parentService = new ParentService();
-
-        Scanner in = new Scanner(System.in);
 
         System.out.println("--------------------------");
         System.out.println("Метод по созданию родителя");
@@ -53,7 +177,7 @@ public class MainService {
 
         System.out.println("\n|Шаг 1|");
         System.out.print("Введите ФИО родителя -> ");
-        String fullNameParent = in.nextLine();
+        String fullNameParent = in.readLine();
 
         System.out.println("\n|Шаг 2|");
         System.out.println("Выберите район по его id");
@@ -65,7 +189,7 @@ public class MainService {
         }
         System.out.println("--------------------");
         System.out.print("Введите id района -> ");
-        int zoneID = in.nextInt();
+        int zoneID = Integer.valueOf(in.readLine());
 
         System.out.println("\n|Шаг 3|");
         System.out.println("Выберите адрес по его id");
@@ -76,10 +200,9 @@ public class MainService {
             System.out.println(address.getTitle());
         }
         System.out.print("Введите id адреса -> ");
-        int addressID = in.nextInt();
-        in.close();
+        int addressID = Integer.valueOf(in.readLine());
 
-        Address addressParent = addressService.findByIdService(addressID);
+        Address addressParent = addressService.findById(addressID);
         Parent parent = new Parent(fullNameParent, addressParent);
         parentService.saveService(parent);
         System.out.println("\nРодитель успешно создан");
@@ -88,13 +211,11 @@ public class MainService {
         System.out.println(parent.getAddress().getTitle());
     }
 
-    public static void createChild() {
-//        Ребенок (ФИО, родители, возраст, учебное учреждение)
+    public static void createChild() throws IOException {
         ParentService parentService = new ParentService();
         ChildService childService = new ChildService();
         SchoolService schoolService = new SchoolService();
 
-        Scanner in = new Scanner(System.in);
         Set<Parent> parents = new HashSet<>();
         int parentIDFirst = -1;
         int parentIDSecond = -1;
@@ -106,11 +227,11 @@ public class MainService {
 
         System.out.println("\n|Шаг 1|");
         System.out.print("Введите ФИО ребенка -> ");
-        String fullNameChild = in.nextLine();
+        String fullNameChild = in.readLine();
 
         System.out.println("\n|Шаг 2|");
         System.out.print("Введите возраст ребенка -> ");
-        int ageChild = in.nextInt();
+        int ageChild = Integer.valueOf(in.readLine());
 
         System.out.println("\n|Шаг 3|");
         System.out.println("Выберите родителя по его id");
@@ -122,15 +243,15 @@ public class MainService {
         }
         System.out.println("--------------------");
         System.out.print("Введите id родителя №1 -> ");
-        parentIDFirst = in.nextInt();
+        parentIDFirst = Integer.valueOf(in.readLine());
 
         System.out.println("\nХотите указать 2-го родителя?");
         System.out.print("Введите 1 - да или 0 - нет -> ");
-        int isSecondParent = in.nextInt();
+        int isSecondParent = Integer.valueOf(in.readLine());
 
         if (isSecondParent == 1) {
             System.out.print("Введите id родителя №2 -> ");
-            parentIDSecond = in.nextInt();
+            parentIDSecond = Integer.valueOf(in.readLine());
         }
 
         if (parentIDFirst != -1) {
@@ -160,7 +281,7 @@ public class MainService {
         }
         System.out.println("--------------------");
         System.out.print("Введите id школы -> ");
-        int schoolID = in.nextInt();
+        int schoolID = Integer.valueOf(in.readLine());
 
         School school = schoolService.findById(schoolID);
         Child child = new Child(fullNameChild, ageChild, school, parents);

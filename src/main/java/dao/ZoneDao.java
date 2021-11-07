@@ -1,5 +1,6 @@
 package dao;
 
+import models.Address;
 import models.Zone;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -11,11 +12,14 @@ import java.util.List;
 public class ZoneDao {
 
     public Zone findById(int id) {
-        return HibernateUtil.getOpenSession().get(Zone.class, id);
+        Session session = HibernateUtil.getOpenSession();
+        Zone zone = session.get(Zone.class, id);
+        return zone;
     }
 
     public boolean checkExistById(int id) {
-        Zone zone = HibernateUtil.getOpenSession().get(Zone.class, id);
+        Session session = HibernateUtil.getOpenSession();
+        Zone zone = session.get(Zone.class, id);
         return (zone != null);
     }
 
@@ -25,8 +29,8 @@ public class ZoneDao {
     }
 
     public Zone findByName(String title) {
-        Query query = HibernateUtil.getOpenSession().
-                createQuery("from Zone where title=:title");
+        Session session = HibernateUtil.getOpenSession();
+        Query query = session.createQuery("from Zone where title=:title");
         query.setParameter("title", title);
         return (Zone) query.uniqueResult();
     }
@@ -57,7 +61,8 @@ public class ZoneDao {
 
 
     public List<Zone> findAll() {
-        List<Zone> users = (List<Zone>) HibernateUtil.getOpenSession().createQuery("From Zone").list();
+        Session session = HibernateUtil.getOpenSession();
+        List<Zone> users = (List<Zone>) session.createQuery("From Zone").list();
         return users;
     }
 }

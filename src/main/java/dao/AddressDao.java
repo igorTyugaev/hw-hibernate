@@ -1,6 +1,7 @@
 package dao;
 
 import models.Address;
+import models.Parent;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
@@ -12,12 +13,16 @@ import java.util.List;
 public class AddressDao {
 
     public Address findById(int id) {
-        return HibernateUtil.getOpenSession().get(Address.class, id);
+        Session session = HibernateUtil.getOpenSession();
+        Address address = session.get(Address.class, id);
+        return address;
     }
 
 
     public boolean checkExistById(int id) {
-        Address address = HibernateUtil.getOpenSession().get(Address.class, id);
+        Session session = HibernateUtil.getOpenSession();
+        Address address = session.get(Address.class, id);
+        session.close();
         return (address != null);
     }
 
@@ -27,15 +32,16 @@ public class AddressDao {
     }
 
     public Address findByName(String title) {
-        Query query = HibernateUtil.getOpenSession().
-                createQuery("from Address where title=:title");
+        Session session = HibernateUtil.getOpenSession();
+        Query query = session.createQuery("from Address where title=:title");
         query.setParameter("title", title);
+        session.close();
         return (Address) query.uniqueResult();
     }
 
     public List<Address> findByZoneID(int zoneId) {
-        Query query = HibernateUtil.getOpenSession().
-                createQuery("from Address where zone.id=:zoneId");
+        Session session = HibernateUtil.getOpenSession();
+        Query query = session.createQuery("from Address where zone.id=:zoneId");
         query.setParameter("zoneId", zoneId);
         return (List<Address>) query.list();
     }
@@ -66,7 +72,8 @@ public class AddressDao {
 
 
     public List<Address> findAll() {
-        List<Address> users = (List<Address>) HibernateUtil.getOpenSession().createQuery("From Address").list();
+        Session session = HibernateUtil.getOpenSession();
+        List<Address> users = (List<Address>) session.createQuery("From Address").list();
         return users;
     }
 }

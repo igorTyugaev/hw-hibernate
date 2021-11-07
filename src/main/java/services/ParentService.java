@@ -28,6 +28,10 @@ public class ParentService {
         parentDao.update(parent);
     }
 
+    public void mergeService(Parent parent) {
+        parentDao.merge(parent);
+    }
+
     public List<Parent> findAllParents() {
         return parentDao.findAll();
     }

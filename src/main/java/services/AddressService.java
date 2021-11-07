@@ -11,7 +11,7 @@ public class AddressService {
     public AddressService() {
     }
 
-    public Address findByIdService(int id) {
+    public Address findById(int id) {
         return addressDao.findById(id);
     }
 

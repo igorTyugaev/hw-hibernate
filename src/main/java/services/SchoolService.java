@@ -1,10 +1,7 @@
 package services;
 
 import dao.SchoolDao;
-import models.Address;
 import models.School;
-import org.hibernate.query.Query;
-import utils.HibernateUtil;
 
 import java.util.List;
 
@@ -22,7 +19,6 @@ public class SchoolService {
         return schoolDao.findByZoneID(id);
     }
 
-
     public void saveService(School school) {
         schoolDao.save(school);
     }
@@ -33,6 +29,10 @@ public class SchoolService {
 
     public void updateService(School school) {
         schoolDao.update(school);
+    }
+
+    public void mergeService(School school) {
+        schoolDao.merge(school);
     }
 
     public List<School> findAllServices() {
