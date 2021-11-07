@@ -9,14 +9,17 @@ import javax.persistence.metamodel.EntityType;
 import services.*;
 import utils.HibernateUtil;
 
+import java.util.logging.Level;
+
 public class Main {
 
     public static void main(final String[] args) throws Exception {
         MainService mainService = new MainService();
-        mainService.createParent(
-                "Мирошин Артём Павлович",
-                "Кемеровская",
-                "Центральный"
-        );
+        mainService.createDefaultData();
+        mainService.clearScreen();
+//        mainService.createParent();
+//        mainService.createChild();
+        mainService.changeAddress();
+//        Смена адреса и школы
     }
 }

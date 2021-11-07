@@ -15,6 +15,10 @@ public class AddressService {
         return addressDao.findById(id);
     }
 
+    public List<Address> findByZoneID(int zone_id) {
+        return addressDao.findByZoneID(zone_id);
+    }
+
     public Address findByNameService(String title) {
         return addressDao.findByName(title);
     }

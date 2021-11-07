@@ -15,6 +15,11 @@ public class School {
         this.num = num;
     }
 
+    public School(int num, Address address) {
+        this.num = num;
+        this.address = address;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

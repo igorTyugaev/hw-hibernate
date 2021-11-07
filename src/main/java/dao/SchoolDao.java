@@ -3,6 +3,7 @@ package dao;
 import models.School;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import utils.HibernateUtil;
 
 import java.util.List;
@@ -11,6 +12,13 @@ public class SchoolDao {
 
     public School findById(int id) {
         return HibernateUtil.getOpenSession().get(School.class, id);
+    }
+
+    public List<School> findByZoneID(int zoneId) {
+        Query query = HibernateUtil.getOpenSession().
+                createQuery("from School where address.zone.id=:zoneId");
+        query.setParameter("zoneId", zoneId);
+        return (List<School>) query.list();
     }
 
     public void save(School school) {

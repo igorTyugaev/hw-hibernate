@@ -14,6 +14,11 @@ public class Zone {
         this.title = title;
     }
 
+    public Zone(String title, List<Address> addresses) {
+        this.title = title;
+        this.addresses = addresses;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

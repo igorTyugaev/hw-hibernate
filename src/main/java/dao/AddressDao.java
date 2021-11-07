@@ -3,6 +3,7 @@ package dao;
 import models.Address;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 import utils.HibernateUtil;
 
@@ -30,6 +31,13 @@ public class AddressDao {
                 createQuery("from Address where title=:title");
         query.setParameter("title", title);
         return (Address) query.uniqueResult();
+    }
+
+    public List<Address> findByZoneID(int zoneId) {
+        Query query = HibernateUtil.getOpenSession().
+                createQuery("from Address where zone.id=:zoneId");
+        query.setParameter("zoneId", zoneId);
+        return (List<Address>) query.list();
     }
 
     public void save(Address address) {

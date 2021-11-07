@@ -15,6 +15,12 @@ public class Child {
         this.age = age;
     }
 
+    public Child(String fullName, int age, School school, Set<Parent> parents) {
+        this.fullName = fullName;
+        this.age = age;
+        this.school = school;
+        this.parents = parents;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -12,7 +12,7 @@ public class ParentService {
     public ParentService() {
     }
 
-    public Parent findService(int id) {
+    public Parent findById(int id) {
         return parentDao.findById(id);
     }
 
